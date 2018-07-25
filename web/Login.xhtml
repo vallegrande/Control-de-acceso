@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+        <f:event type="preRenderView" listener="#{usuarioController.securityLogin()}"/>
+ 
+    </h:head>
+    <h:body>
+        <h:form id="form">
+
+            <h:panelGroup >
+                <p:inputText value="#{usuarioController.user}" placeholder="Usuario" disabled="#{usuarioController.intentos le 2 ? false:true}"/>
+                <p:password value="#{usuarioController.pass}" placeholder="Contraseña" disabled="#{usuarioController.intentos le 2 ? false:true}"/>
+                <p:commandButton id="BtnIniciarSesion" value="Ingresar" actionListener="#{usuarioController.startSession()}" update="form" oncomplete="refresh();" disabled="#{usuarioController.intentos le 2 ? false:true}" />
+                <p:blockUI block="form" trigger="BtnIniciarSesion" />
+            </h:panelGroup>
+            <h:panelGroup rendered="#{usuarioController.intentos >= 3 ? true:false}">
+                <h:outputText id="txt_count" value="#{usuarioController.number}" />
+                <p:poll interval="3" listener="#{usuarioController.increment}" update="form" oncomplete="refresh();" />
+            </h:panelGroup>
+
+            <p:remoteCommand name="refresh" update="form"/>
+        </h:form>     
+
+    </h:body>
+</html>
+
